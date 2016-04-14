@@ -11,6 +11,9 @@
 	        Site Ace
 	      </a>
 	    </div>
+	    <div class="navbar-text">
+	      {{> loginButtons}}
+	    </div>
 	  </div>
 	</nav>
 
@@ -22,27 +25,29 @@
 
 
 <template name="website_form">
-	<a class="btn btn-default js-toggle-website-form" href="#">
-  		<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-	</a>
-	<div id="website_form" class="hidden_div">
-		<form class="js-save-website-form">
-		  <div class="form-group">
-		    <label for="url">Site address</label>
-		    <input type="text" class="form-control" id="url" placeholder="http://www.mysite.com">
-		  </div>
-		  <div class="form-group">
-		    <label for="title">Title</label>
-		    <input type="text" class="form-control" id="title" placeholder="Mysite">
-		  </div>
-		    <div class="form-group">
-		    <label for="description">Description</label>
-		    <input type="text" class="form-control" id="description" placeholder="I found this site really useful for ...">
-		  </div>
+	{{#if currentUser}}
+	    <a class="btn btn-default js-toggle-website-form" href="#">
+  			<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+	    </a>
+	    <div id="website_form" class="hidden_div">
+			<form class="js-save-website-form">
+			  <div class="form-group">
+			    <label for="url">Site address</label>
+			    <input type="text" class="form-control" id="url" placeholder="http://www.mysite.com" required>
+			  </div>
+			  <div class="form-group">
+			    <label for="title">Title</label>
+			    <input type="text" class="form-control" id="title" placeholder="Mysite" required>
+			  </div>
+			    <div class="form-group">
+			    <label for="description">Description</label>
+			    <input type="text" class="form-control" id="description" placeholder="I found this site really useful for ..." required>
+			  </div>
 
-		  <button type="submit" class="btn btn-default">Submit</button>
-		</form>
-	</div>
+			  <button type="submit" class="btn btn-default">Submit</button>
+			</form>
+		</div>
+	{{/if}}
 </template>
 
 <!-- template that displays several website items -->
@@ -61,12 +66,14 @@
 	<p>
 		{{description}}
 	</p>
+	<p>Rating: {{rating}}</p>
 	<a href="#" class="btn btn-default js-upvote">
 		<span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
 	</a>
 	<a href="#" class="btn btn-default js-downvote">
 		<span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span>
 	</a>
+	<p>Added On: {{createdOn}}</p>	
 	<!-- you will be putting your up and down vote buttons in here! -->
 </li>
 </template>
