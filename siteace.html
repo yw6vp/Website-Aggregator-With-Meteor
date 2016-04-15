@@ -141,7 +141,9 @@
 			{{> comments}}
 		{{else}}
 			<a href="/{{_id}}" class="btn btn-info">View Details</a>
+			{{#if currentUser}}
 			<button class="js-del-website btn btn-warning">Delete</button>
+			{{/if}}
 		{{/if}}
 		<br>
 		<!-- you will be putting your up and down vote buttons in here! -->
