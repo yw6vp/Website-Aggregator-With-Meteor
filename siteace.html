@@ -133,6 +133,12 @@
 			<span>0</span>
 		{{/if}}
 		<p class="date">Added On: {{createdOn}}</p>	
+		{{#if username}}
+		<p>Posted By: {{username}}</p>
+		{{else}}
+		<p>Posted By: Anonymous</p>
+		{{/if}}
+		<p class=""></p>
 		<p>
 			{{description}}
 		</p>

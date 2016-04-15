@@ -106,6 +106,10 @@ if (Meteor.isClient) {
 			if (!confirm('Delete this website.')) {
 				return;
 			}
+			if (this.createdBy && this.createdBy != Meteor.user()._id) {
+				alert('You can only delete websites posted by you.');
+				return;
+			}
 			var website_id = this._id;
 			console.log(website_id);
 			$("#"+website_id).hide('slow', function() {
@@ -122,7 +126,7 @@ if (Meteor.isClient) {
 
 			// here is an example of how to get the url out of the form:
 			var url = event.target.url.value;
-			if (url.indexOf("http://") != 0) {
+			if (url.indexOf("http") != 0) {
 				url = "http://" + url;
 			}
 			console.log("The url they entered is: "+url);
@@ -170,7 +174,8 @@ if (Meteor.isClient) {
 			Websites.update({_id: website_id}, {$push: {comments: comment}});
 			return false; // stop the form submit from reloading the page
 		}
-	})
+	});
+
 }
 
 
@@ -228,7 +233,9 @@ if (Meteor.isServer) {
 					url: url,
 					title: title,
 					description: description,
-					createdOn: new Date()
+					createdOn: new Date(),
+					createdBy: Meteor.user()._id,
+					username: Meteor.user().username
 				};
 				console.log(result);
 				return result;
