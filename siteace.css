@@ -2,3 +2,8 @@
 .hidden_div{
 	display:none;
 }
+
+.date {
+	color: gray;
+	font-size: 2;
+}

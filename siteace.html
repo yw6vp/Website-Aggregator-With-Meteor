@@ -3,12 +3,21 @@
 </head>
 
 <body>
+
+</body>
+
+<template name="ApplicationLayout">
+  {{> yield "navbar"}}
+  {{> yield "main"}}
+</template>
+
+<template name="navbar">
 	<!-- navbar  - you will be putting the login functions here -->
 	<nav class="navbar navbar-default">
 	  <div class="container-fluid">
 	    <div class="navbar-header">
-	      <a class="navbar-brand" href="#">
-	        Site Ace
+	      <a class="navbar-brand" href="/">
+	        Site Ace Home
 	      </a>
 	    </div>
 	    <div class="navbar-text">
@@ -16,12 +25,20 @@
 	    </div>
 	  </div>
 	</nav>
+</template>	
 
+<template name="websites">
 	<div class="container">
 		{{> website_form}}
 		{{> website_list}}
 	</div>
-</body>
+</template>
+
+<template name="single_website">
+	<div class="container">
+		{{> website_item}}
+	</div>
+</template>
 
 
 <template name="website_form">
@@ -36,12 +53,12 @@
 			    <input type="text" class="form-control" id="url" placeholder="http://www.mysite.com" required>
 			  </div>
 			  <div class="form-group">
-			    <label for="title">Title</label>
-			    <input type="text" class="form-control" id="title" placeholder="Mysite" required>
+			    <label for="title">Title (will be extracted from website automatically if left blank)</label>
+			    <input type="text" class="form-control" id="title" placeholder="Mysite">
 			  </div>
 			    <div class="form-group">
-			    <label for="description">Description</label>
-			    <input type="text" class="form-control" id="description" placeholder="I found this site really useful for ..." required>
+			    <label for="description">Description (will be extracted from website automatically if left blank)</label>
+			    <input type="text" class="form-control" id="description" placeholder="I found this site really useful for ...">
 			  </div>
 
 			  <button type="submit" class="btn btn-default">Submit</button>
@@ -50,30 +67,83 @@
 	{{/if}}
 </template>
 
+<template name="comment_form">
+    <div id="comment_form">
+		<form class="js-comment-form">
+		    <div class="form-group">
+		        <label for="comment">Your Comment:</label>
+		        <br>
+		        <textarea id="comment" placeholder="Please leave your comment here." required></textarea>
+		    </div>
+
+		    <button type="submit" class="btn btn-default">Submit</button>
+		</form>
+	</div>
+	<br>
+</template>
+
 <!-- template that displays several website items -->
 <template name="website_list">
 	<ol>
 	{{#each websites}}
+	<hr>
 	{{>website_item}}
 	{{/each}}
 	</ol>
 </template>
 
+<template name="comments">
+	{{#if comments}}
+		<ol>
+			{{#each comments}}
+				<hr>
+				{{> comment}}
+			{{/each}}
+		</ol>
+	{{else}}
+		<h3> Be the first to leave a comment!</h3>
+	{{/if}}
+</template>
+
+<template name="comment">
+	<p>Comment: {{comment}}</p>
+	<p>Author: {{author}}</p>
+	<p>Date: {{createdOn}}</p>
+</template>
+
 <!-- template that displays individual website entries -->
 <template name="website_item">
-<li>
-	<a href="{{url}}">{{title}}</a>
-	<p>
-		{{description}}
-	</p>
-	<p>Rating: {{rating}}</p>
-	<a href="#" class="btn btn-default js-upvote">
-		<span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
-	</a>
-	<a href="#" class="btn btn-default js-downvote">
-		<span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span>
-	</a>
-	<p>Added On: {{createdOn}}</p>	
-	<!-- you will be putting your up and down vote buttons in here! -->
-</li>
+	<li id={{_id}}>
+		<a href="{{url}}">{{title}}</a>
+		<br>
+		<a href="#" class="btn btn-default js-upvote">
+			<span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
+		</a>
+		{{#if upvotes}}
+			<span>{{upvotes}}</span>
+		{{else}}
+			<span>0</span>
+		{{/if}}
+		<a href="#" class="btn btn-default js-downvote">
+			<span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span>
+		</a>
+		{{#if downvotes}}
+			<span>{{downvotes}}</span>
+		{{else}}
+			<span>0</span>
+		{{/if}}
+		<p class="date">Added On: {{createdOn}}</p>	
+		<p>
+			{{description}}
+		</p>
+		{{#if details}}
+			{{> comment_form}}
+			{{> comments}}
+		{{else}}
+			<a href="/{{_id}}" class="btn btn-info">View Details</a>
+			<button class="js-del-website btn btn-warning">Delete</button>
+		{{/if}}
+		<br>
+		<!-- you will be putting your up and down vote buttons in here! -->
+	</li>
 </template>
